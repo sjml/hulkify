@@ -187,12 +187,14 @@ LINKING_VERBS = fixList(LINKING_VERBS)
 
 
 def hulkify(bannerText):
-    hulkText = bannerText
+    hulkText = unicode(bannerText, "utf-8")
 
     def removeWordFromMatch(matchObject):
         before = len(matchObject.group(1)) > 0
         after  = len(matchObject.group(3)) > 0
 
+        if not before and not after:
+            return matchObject.expand(r"\2")
         if before and after:
             return matchObject.expand(r"\1")
         if before:
@@ -202,24 +204,24 @@ def hulkify(bannerText):
 
     # Replace all personal pronouns (I/me/I've/I'm/etc) with "Hulk"
     for pp in PERSONAL_PRONOUNS:
-        hulkText = re.sub(r"(\s?)(\b%s\b)(\s?)" % (pp), r"\1Hulk\3", hulkText, flags=re.IGNORECASE)
+        hulkText = re.sub(r"(\s?|^)(\b%s\b)(\s?|$)" % (pp), r"\1Hulk\3", hulkText, flags=re.IGNORECASE)
     for ppp in PERSONAL_POSSESSIVE_PRONOUNS:
         if "’" in bannerText:
-            hulkText = re.sub(r"(\s?)(\b%s\b)(\s?)" % (ppp), r"\1Hulk’s\3", hulkText, flags=re.IGNORECASE)
+            hulkText = re.sub(r"(\s?|^)(\b%s\b)(\s?|$)" % (ppp), r"\1Hulk’s\3", hulkText, flags=re.IGNORECASE)
         else:
-            hulkText = re.sub(r"(\s?)(\b%s\b)(\s?)" % (ppp), r"\1Hulk's\3", hulkText, flags=re.IGNORECASE)
+            hulkText = re.sub(r"(\s?|^)(\b%s\b)(\s?|$)" % (ppp), r"\1Hulk's\3", hulkText, flags=re.IGNORECASE)
 
     # Change contractions to their main word. ("can't" -> "not")
     for con, main in CONTRACTION_MAPPING.iteritems():
-        hulkText = re.sub(r"(\s?)(\b%s\b)(\s?)" % (con), r"\1%s\3" % main, hulkText, flags=re.IGNORECASE)
+        hulkText = re.sub(r"(\s?|^)(\b%s\b)(\s?|$)" % (con), r"\1%s\3" % main, hulkText, flags=re.IGNORECASE)
 
     # Drop all linking verbs ("am" or "to be")
     for lv in LINKING_VERBS:
-        hulkText = re.sub(r"(\s?)(\b%s\b)(\s?)" % (lv), removeWordFromMatch, hulkText, flags=re.IGNORECASE)
+        hulkText = re.sub(r"(\s?|^)(\b%s\b)(\s?|$)" % (lv), removeWordFromMatch, hulkText, flags=re.IGNORECASE)
 
     # Remove articles.
     for a in ARTICLES:
-        hulkText = re.sub(r"(\s?)(\b%s\b)(\s?)" % (a), removeWordFromMatch, hulkText, flags=re.IGNORECASE)
+        hulkText = re.sub(r"(\s?|^)(\b%s\b)(\s?|$)" % (a), removeWordFromMatch, hulkText, flags=re.IGNORECASE)
 
     parsed = pattern.en.tag(hulkText)
 
@@ -278,4 +280,4 @@ if __name__ == '__main__':
         corpus = []
 
     for text in corpus:
-        print hulkify(text.strip())
+        print hulkify(text).encode("utf-8")
