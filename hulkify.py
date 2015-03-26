@@ -3,13 +3,10 @@
 
 import sys
 import re
-import ConfigParser
+import random
 
-from wordnik import *
+import pattern.en
 
-corpus = [
-
-]
 
 PERSONAL_PRONOUNS = [
     "me",
@@ -127,6 +124,45 @@ LINKING_VERBS = [
     "have been",
 ]
 
+DIMINUTIVE_ADJECTIVES = [
+    "small",
+    "meager",
+    "cramped",
+    "limited",
+    "meager",
+    "microscopic",
+    "miniature",
+    "minuscule",
+    "modest",
+    "narrow",
+    "paltry",
+    "short",
+    "slight",
+    "small-scale",
+    "young",
+    "baby",
+    "little",
+    "mini",
+    "petite",
+    "trifling",
+    "wee",
+    "bitty",
+    "immature",
+    "inadequate",
+    "inconsequential",
+    "inconsiderable",
+    "insufficient",
+    "piddling",
+    "pint-sized",
+    "pitiful",
+    "pocket-sized",
+    "stunted",
+    "teensy",
+    "teeny",
+    "trivial",
+    "undersized",
+]
+
 # preprocess to account for unicode
 def fixList(myList):
     replacement = []
@@ -148,12 +184,6 @@ PERSONAL_PRONOUNS = fixList(PERSONAL_PRONOUNS)
 PERSONAL_POSSESSIVE_PRONOUNS = fixList(PERSONAL_POSSESSIVE_PRONOUNS)
 CONTRACTION_MAPPING = fixDict(CONTRACTION_MAPPING)
 LINKING_VERBS = fixList(LINKING_VERBS)
-
-
-CREDENTIALS = ConfigParser.ConfigParser()
-CREDENTIALS.read("./credentials.ini")
-WORDNIK_CLIENT = swagger.ApiClient(CREDENTIALS.get("wordnik", "apiKey"), "http://api.wordnik.com/v4")
-WORDNIK = WordApi.WordApi(WORDNIK_CLIENT)
 
 
 def hulkify(bannerText):
@@ -191,20 +221,54 @@ def hulkify(bannerText):
     for a in ARTICLES:
         hulkText = re.sub(r"(\s?)(\b%s\b)(\s?)" % (a), removeWordFromMatch, hulkText, flags=re.IGNORECASE)
 
-    # Change verbs to present tense.
+    parsed = pattern.en.tag(hulkText)
 
+    # Change verbs to present tense.
+    for wordData in parsed:
+        if wordData[1][0] == 'V':
+            hulkText = re.sub(r"\b%s\b" % wordData[0], pattern.en.lemma(wordData[0]), hulkText, flags=re.IGNORECASE)
 
     # Randomly replace the occasional verb with "smash."
+
     # Replace any diminuitive adjective with "puny."
+    for wordData in parsed:
+        if wordData[1][:2] == 'JJ':
+            if wordData[0] in DIMINUTIVE_ADJECTIVES:
+                hulkText = re.sub(r"\b%s\b" % wordData[0], "puny", hulkText, flags=re.IGNORECASE)
+
     # Exclamation points.
+    def exclaim(matchObject):
+        punct = matchObject.group(0)
+        startingMarks = punct.count("!")
+        if "." in punct and startingMarks == 0:
+            # change out periods most of the time
+            if (random.random() < 0.7):
+                punct = "!"
+
+        # 30% chance of intensifying
+        if ("." not in punct) and (random.random() < 0.3):
+            punct += "!"
+            # slight chance of double intensifying
+            if (random.random() < 0.45):
+                punct += "!"
+
+        return punct
+
+    hulkText = re.sub(r"([.?!]+)", exclaim, hulkText)
+
+    # Easter egg at mention of "strong"
+    strongest = " Hulk is the strongest there is!"
+    if (" strong " in hulkText) and (len(hulkText) + len(strongest) <= 140):
+        hulkText += strongest
 
     # Convert the whole thing to uppercase. 
     hulkText = hulkText.upper()
-
-    # Easter eggs: "Hulk is the strongest there is!" at mention of "strong"
-
+    
     return hulkText
 
 
-for text in corpus:
-    print hulkify(text.strip())
+if __name__ == '__main__':
+    corpus = [
+    ]
+    for text in corpus:
+        print hulkify(text.strip())
