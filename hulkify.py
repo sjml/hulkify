@@ -268,7 +268,11 @@ def hulkify(bannerText):
 
 
 if __name__ == '__main__':
-    corpus = [
-    ]
+    try:
+        with open("./test_corpus.txt", "r") as corpusFile:
+            corpus = corpusFile.read().split("\n")
+    except:
+        corpus = []
+
     for text in corpus:
         print hulkify(text.strip())
