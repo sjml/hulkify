@@ -229,6 +229,7 @@ def hulkify(bannerText):
             hulkText = re.sub(r"\b%s\b" % wordData[0], pattern.en.lemma(wordData[0]), hulkText, flags=re.IGNORECASE)
 
     # Randomly replace the occasional verb with "smash."
+    # TODO: what's a good word list for this replacement?
 
     # Replace any diminuitive adjective with "puny."
     for wordData in parsed:
@@ -251,6 +252,8 @@ def hulkify(bannerText):
             # slight chance of double intensifying
             if (random.random() < 0.45):
                 punct += "!"
+                if "?" in punct:
+                    punct += "?!"
 
         return punct
 
