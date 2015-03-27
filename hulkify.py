@@ -9,158 +9,158 @@ import pattern.en
 
 
 PERSONAL_PRONOUNS = [
-    "me",
-    "myself",
-    "I've",
-    "I'm",
-    "I'd",
-    "I'll",
-    "I",
+    u"me",
+    u"myself",
+    u"I've",
+    u"I'm",
+    u"I'd",
+    u"I'll",
+    u"I",
 ]
 
 PERSONAL_POSSESSIVE_PRONOUNS = [
-    "my",
-    "mine",
+    u"my",
+    u"mine",
 ]
 
 CONTRACTION_MAPPING = {
-    "ain't" : "not",
-    "aren't" : "not",
-    "can't" : "not",
-    "could've" : "could",
-    "couldn't" : "not",
-    "didn't" : "not",
-    "doesn't" : "not",
-    "don't" : "no",
-    "hadn't" : "not",
-    "hasn't" : "not",
-    "haven't" : "not",
-    "he'd" : "he",
-    "he'll" : "he",
-    "he's" : "he",
-    "how'd" : "how",
-    "how'll" : "how",
-    "how's" : "how",
-    "isn't" : "not",
-    "it'd" : "it",
-    "it'll" : "it",
-    "it's" : "it",
-    "let's" : "let",
-    "might've" : "might",
-    "mightn't" : "not",
-    "must've" : "must",
-    "mustn't" : "not",
-    "needn't" : "not",
-    "not've" : "not",
-    "oughtn't" : "not",
-    "shan't" : "not",
-    "she'd" : "she",
-    "she'll" : "she",
-    "she's" : "she",
-    "should've" : "should",
-    "shouldn't" : "not",
-    "that'll" : "that",
-    "that's" : "that",
-    "there'd" : "there",
-    "there're" : "there",
-    "there's" : "there",
-    "they'd" : "they",
-    "they'll" : "they",
-    "they're" : "they",
-    "they've" : "they",
-    "wasn't" : "not",
-    "we'd" : "we",
-    "we'll" : "we",
-    "we're" : "we",
-    "we've" : "we",
-    "weren't" : "not",
-    "what'll" : "what",
-    "what're" : "what",
-    "what's" : "what",
-    "what've" : "what",
-    "when's" : "when",
-    "where'd" : "where",
-    "where's" : "where",
-    "where've" : "where",
-    "who'd" : "who",
-    "who'll" : "who",
-    "who're" : "who",
-    "who's" : "who",
-    "who've" : "who",
-    "why'll" : "why",
-    "why're" : "why",
-    "why's" : "why",
-    "won't" : "not",
-    "would've" : "would",
-    "wouldn't" : "not",
-    "y'all" : "you",
-    "you'd" : "you",
-    "you'll" : "you",
-    "you're" : "you",
-    "you've" : "you",
+    u"ain't" : u"not",
+    u"aren't" : u"not",
+    u"can't" : u"not",
+    u"could've" : u"could",
+    u"couldn't" : u"not",
+    u"didn't" : u"not",
+    u"doesn't" : u"not",
+    u"don't" : u"no",
+    u"hadn't" : u"not",
+    u"hasn't" : u"not",
+    u"haven't" : u"not",
+    u"he'd" : u"he",
+    u"he'll" : u"he",
+    u"he's" : u"he",
+    u"how'd" : u"how",
+    u"how'll" : u"how",
+    u"how's" : u"how",
+    u"isn't" : u"not",
+    u"it'd" : u"it",
+    u"it'll" : u"it",
+    u"it's" : u"it",
+    u"let's" : u"let",
+    u"might've" : u"might",
+    u"mightn't" : u"not",
+    u"must've" : u"must",
+    u"mustn't" : u"not",
+    u"needn't" : u"not",
+    u"not've" : u"not",
+    u"oughtn't" : u"not",
+    u"shan't" : u"not",
+    u"she'd" : u"she",
+    u"she'll" : u"she",
+    u"she's" : u"she",
+    u"should've" : u"should",
+    u"shouldn't" : u"not",
+    u"that'll" : u"that",
+    u"that's" : u"that",
+    u"there'd" : u"there",
+    u"there're" : u"there",
+    u"there's" : u"there",
+    u"they'd" : u"they",
+    u"they'll" : u"they",
+    u"they're" : u"they",
+    u"they've" : u"they",
+    u"wasn't" : u"not",
+    u"we'd" : u"we",
+    u"we'll" : u"we",
+    u"we're" : u"we",
+    u"we've" : u"we",
+    u"weren't" : u"not",
+    u"what'll" : u"what",
+    u"what're" : u"what",
+    u"what's" : u"what",
+    u"what've" : u"what",
+    u"when's" : u"when",
+    u"where'd" : u"where",
+    u"where's" : u"where",
+    u"where've" : u"where",
+    u"who'd" : u"who",
+    u"who'll" : u"who",
+    u"who're" : u"who",
+    u"who's" : u"who",
+    u"who've" : u"who",
+    u"why'll" : u"why",
+    u"why're" : u"why",
+    u"why's" : u"why",
+    u"won't" : u"not",
+    u"would've" : u"would",
+    u"wouldn't" : u"not",
+    u"y'all" : u"you",
+    u"you'd" : u"you",
+    u"you'll" : u"you",
+    u"you're" : u"you",
+    u"you've" : u"you",
 }
 
 ARTICLES = [
-    "a",
-    "an",
-    "the",
+    u"a",
+    u"an",
+    u"the",
 ]
 
 LINKING_VERBS = [
-    "be",
-    "is",
-    "was",
-    "shall be",
-    "will be",
-    "has been",
-    "had been",
-    "may be",
-    "should be",
-    "am",
-    "are",
-    "were",
-    "shall have been",
-    "will have been",
-    "have been",
+    u"be",
+    u"is",
+    u"was",
+    u"shall be",
+    u"will be",
+    u"has been",
+    u"had been",
+    u"may be",
+    u"should be",
+    u"am",
+    u"are",
+    u"were",
+    u"shall have been",
+    u"will have been",
+    u"have been",
 ]
 
 DIMINUTIVE_ADJECTIVES = [
-    "small",
-    "meager",
-    "cramped",
-    "limited",
-    "meager",
-    "microscopic",
-    "miniature",
-    "minuscule",
-    "modest",
-    "narrow",
-    "paltry",
-    "short",
-    "slight",
-    "small-scale",
-    "young",
-    "baby",
-    "little",
-    "mini",
-    "petite",
-    "trifling",
-    "wee",
-    "bitty",
-    "immature",
-    "inadequate",
-    "inconsequential",
-    "inconsiderable",
-    "insufficient",
-    "piddling",
-    "pint-sized",
-    "pitiful",
-    "pocket-sized",
-    "stunted",
-    "teensy",
-    "teeny",
-    "trivial",
-    "undersized",
+    u"small",
+    u"meager",
+    u"cramped",
+    u"limited",
+    u"meager",
+    u"microscopic",
+    u"miniature",
+    u"minuscule",
+    u"modest",
+    u"narrow",
+    u"paltry",
+    u"short",
+    u"slight",
+    u"small-scale",
+    u"young",
+    u"baby",
+    u"little",
+    u"mini",
+    u"petite",
+    u"trifling",
+    u"wee",
+    u"bitty",
+    u"immature",
+    u"inadequate",
+    u"inconsequential",
+    u"inconsiderable",
+    u"insufficient",
+    u"piddling",
+    u"pint-sized",
+    u"pitiful",
+    u"pocket-sized",
+    u"stunted",
+    u"teensy",
+    u"teeny",
+    u"trivial",
+    u"undersized",
 ]
 
 # preprocess to account for unicode
@@ -168,16 +168,16 @@ def fixList(myList):
     replacement = []
     for entry in myList:
         replacement.append(entry)
-        if "'" in entry:
-            replacement.append(entry.replace("'", "’"))
+        if u"'" in entry:
+            replacement.append(entry.replace(u"'", u"’"))
     return replacement
 
 def fixDict(myDict):
     replacement = {}
     for key, value in myDict.iteritems():
         replacement[key] = value
-        if "'" in key:
-            replacement[key.replace("'", "’")] = value
+        if u"'" in key:
+            replacement[key.replace(u"'", u"’")] = value
     return replacement
 
 PERSONAL_PRONOUNS = fixList(PERSONAL_PRONOUNS)
@@ -206,7 +206,7 @@ def hulkify(bannerText):
     for pp in PERSONAL_PRONOUNS:
         hulkText = re.sub(r"(\s?|^)(\b%s\b)(\s?|$)" % (pp), r"\1Hulk\3", hulkText, flags=re.IGNORECASE)
     for ppp in PERSONAL_POSSESSIVE_PRONOUNS:
-        if "’" in bannerText:
+        if u"’" in bannerText:
             hulkText = re.sub(r"(\s?|^)(\b%s\b)(\s?|$)" % (ppp), r"\1Hulk’s\3", hulkText, flags=re.IGNORECASE)
         else:
             hulkText = re.sub(r"(\s?|^)(\b%s\b)(\s?|$)" % (ppp), r"\1Hulk's\3", hulkText, flags=re.IGNORECASE)
@@ -227,7 +227,7 @@ def hulkify(bannerText):
 
     # Change verbs to present tense.
     for wordData in parsed:
-        if wordData[1][0] == 'V':
+        if wordData[1][0] == u"V":
             hulkText = re.sub(r"\b%s\b" % wordData[0], pattern.en.lemma(wordData[0]), hulkText, flags=re.IGNORECASE)
 
     # Randomly replace the occasional verb with "smash."
@@ -235,35 +235,34 @@ def hulkify(bannerText):
 
     # Replace any diminuitive adjective with "puny."
     for wordData in parsed:
-        if wordData[1][:2] == 'JJ':
+        if wordData[1][:2] == u"JJ":
             if wordData[0] in DIMINUTIVE_ADJECTIVES:
-                hulkText = re.sub(r"\b%s\b" % wordData[0], "puny", hulkText, flags=re.IGNORECASE)
+                hulkText = re.sub(r"\b%s\b" % wordData[0], u"puny", hulkText, flags=re.IGNORECASE)
 
     # Exclamation points.
     def exclaim(matchObject):
         punct = matchObject.group(0)
-        startingMarks = punct.count("!")
-        if "." in punct and startingMarks == 0:
+        if u"." in punct and punct.count(u"!") == 0:
             # change out periods most of the time
             if (random.random() < 0.7):
-                punct = "!"
+                punct = u"!"
 
         # 30% chance of intensifying
-        if ("." not in punct) and (random.random() < 0.3):
-            punct += "!"
+        if (u"." not in punct) and (random.random() < 0.3):
+            punct += u"!"
             # slight chance of double intensifying
             if (random.random() < 0.45):
-                punct += "!"
-                if "?" in punct:
-                    punct += "?!"
+                punct += u"!"
+                if u"?" in punct:
+                    punct += u"?!"
 
         return punct
 
     hulkText = re.sub(r"([.?!]+)", exclaim, hulkText)
 
     # Easter egg at mention of "strong"
-    strongest = " Hulk is the strongest there is!"
-    if (" strong " in hulkText) and (len(hulkText) + len(strongest) <= 140):
+    strongest = u" Hulk is the strongest there is!"
+    if (u" strong " in hulkText) and (len(hulkText) + len(strongest) <= 140):
         hulkText += strongest
 
     # Convert the whole thing to uppercase. 
