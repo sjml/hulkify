@@ -187,7 +187,7 @@ LINKING_VERBS = fixList(LINKING_VERBS)
 
 
 def hulkify(bannerText):
-    hulkText = unicode(bannerText, "utf-8")
+    hulkText = bannerText
 
     def removeWordFromMatch(matchObject):
         before = len(matchObject.group(1)) > 0
@@ -280,4 +280,4 @@ if __name__ == '__main__':
         corpus = []
 
     for text in corpus:
-        print hulkify(text).encode("utf-8")
+        print hulkify(unicode(text, "utf-8")).encode("utf-8")
