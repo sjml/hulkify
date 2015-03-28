@@ -186,58 +186,88 @@ CONTRACTION_MAPPING = fixDict(CONTRACTION_MAPPING)
 LINKING_VERBS = fixList(LINKING_VERBS)
 
 
-def hulkify(bannerText):
-    hulkText = bannerText
+def hulkify(bannerText, maxLength=None, encoding="utf-8"):
+    if type(bannerText) != unicode:
+        hulkText = unicode(bannerText, encoding)
+    else:
+        hulkText = bannerText
 
     def removeWordFromMatch(matchObject):
         before = len(matchObject.group(1)) > 0
         after  = len(matchObject.group(3)) > 0
 
         if not before and not after:
-            return matchObject.expand(r"\2")
+            return matchObject.expand(ur"\2")
         if before and after:
-            return matchObject.expand(r"\1")
+            return matchObject.expand(ur"\1")
         if before:
-            return matchObject.expand(r"\3")
+            return matchObject.expand(ur"\3")
         if after:
-            return matchObject.expand(r"\1")
+            return matchObject.expand(ur"\1")
 
-    # Replace all personal pronouns (I/me/I've/I'm/etc) with "Hulk"
-    for pp in PERSONAL_PRONOUNS:
-        hulkText = re.sub(r"(\s?|^)(\b%s\b)(\s?|$)" % (pp), r"\1Hulk\3", hulkText, flags=re.IGNORECASE)
-    for ppp in PERSONAL_POSSESSIVE_PRONOUNS:
-        if u"’" in bannerText:
-            hulkText = re.sub(r"(\s?|^)(\b%s\b)(\s?|$)" % (ppp), r"\1Hulk’s\3", hulkText, flags=re.IGNORECASE)
-        else:
-            hulkText = re.sub(r"(\s?|^)(\b%s\b)(\s?|$)" % (ppp), r"\1Hulk's\3", hulkText, flags=re.IGNORECASE)
+    def changeTextUnlessOverrun(oldText, newText, maximum):
+        if maximum == None:
+            return newText
+        if len(newText) > maximum:
+            return oldText
+        return newText
 
     # Change contractions to their main word. ("can't" -> "not")
     for con, main in CONTRACTION_MAPPING.iteritems():
-        hulkText = re.sub(r"(\s?|^)(\b%s\b)(\s?|$)" % (con), r"\1%s\3" % main, hulkText, flags=re.IGNORECASE)
+        hulkText = re.sub(ur"(\s?|^)(\b%s\b)(\s?|$)" % (con), ur"\1%s\3" % main, hulkText, flags=re.IGNORECASE | re.UNICODE)
 
     # Drop all linking verbs ("am" or "to be")
     for lv in LINKING_VERBS:
-        hulkText = re.sub(r"(\s?|^)(\b%s\b)(\s?|$)" % (lv), removeWordFromMatch, hulkText, flags=re.IGNORECASE)
+        hulkText = re.sub(ur"(\s?|^)(\b%s\b)(\s?|$)" % (lv), removeWordFromMatch, hulkText, flags=re.IGNORECASE | re.UNICODE)
 
     # Remove articles.
     for a in ARTICLES:
-        hulkText = re.sub(r"(\s?|^)(\b%s\b)(\s?|$)" % (a), removeWordFromMatch, hulkText, flags=re.IGNORECASE)
+        hulkText = re.sub(ur"(\s?|^)(\b%s\b)(\s?|$)" % (a), removeWordFromMatch, hulkText, flags=re.IGNORECASE | re.UNICODE)
 
-    parsed = pattern.en.tag(hulkText)
+
+    ### everything above here only removes content; after this we have to consider length
+
+    # Replace all personal pronouns (I/me/I've/I'm/etc) with "Hulk"
+    for pp in PERSONAL_PRONOUNS:
+        hulkText = changeTextUnlessOverrun(
+            hulkText,
+            re.sub(ur"(\s?|^)(\b%s\b)(\s?|$)" % (pp), ur"\1Hulk\3", hulkText, flags=re.IGNORECASE | re.UNICODE),
+            maxLength
+        )
+    for ppp in PERSONAL_POSSESSIVE_PRONOUNS:
+        if u"’" in bannerText:
+            hulkText = changeTextUnlessOverrun(
+                hulkText,
+                re.sub(ur"(\s?|^)(\b%s\b)(\s?|$)" % (ppp), ur"\1Hulk’s\3", hulkText, flags=re.IGNORECASE | re.UNICODE),
+                maxLength
+            )
+        else:
+            hulkText = changeTextUnlessOverrun(
+                hulkText,
+                re.sub(ur"(\s?|^)(\b%s\b)(\s?|$)" % (ppp), ur"\1Hulk's\3", hulkText, flags=re.IGNORECASE | re.UNICODE),
+                maxLength
+            )
+
+    parsed = pattern.en.tag(hulkText, tokenize=False)
 
     # Change verbs to present tense.
     for wordData in parsed:
         if wordData[1][0] == u"V":
-            hulkText = re.sub(r"\b%s\b" % wordData[0], pattern.en.lemma(wordData[0]), hulkText, flags=re.IGNORECASE)
-
-    # Randomly replace the occasional verb with "smash."
-    # TODO: what's a good word list for this replacement?
+            hulkText = changeTextUnlessOverrun(
+                hulkText,
+                re.sub(ur"\b%s\b" % wordData[0], pattern.en.lemma(wordData[0]), hulkText, flags=re.IGNORECASE | re.UNICODE),
+                maxLength
+            )
 
     # Replace any diminuitive adjective with "puny."
     for wordData in parsed:
         if wordData[1][:2] == u"JJ":
             if wordData[0] in DIMINUTIVE_ADJECTIVES:
-                hulkText = re.sub(r"\b%s\b" % wordData[0], u"puny", hulkText, flags=re.IGNORECASE)
+                hulkText = changeTextUnlessOverrun(
+                    hulkText,
+                    re.sub(ur"\b%s\b" % wordData[0], u"puny", hulkText, flags=re.IGNORECASE | re.UNICODE),
+                    maxLength
+                )
 
     # Exclamation points.
     def exclaim(matchObject):
@@ -246,6 +276,10 @@ def hulkify(bannerText):
             # change out periods most of the time
             if (random.random() < 0.7):
                 punct = u"!"
+
+        # if we're already at the max, don't intensify
+        if (maxLength != None) and (len(hulkText) >= maxLength):
+            return punct
 
         # 30% chance of intensifying
         if (u"." not in punct) and (random.random() < 0.3):
@@ -258,12 +292,13 @@ def hulkify(bannerText):
 
         return punct
 
-    hulkText = re.sub(r"([.?!]+)", exclaim, hulkText)
+    hulkText = re.sub(ur"([.?!]+)", exclaim, hulkText)
 
     # Easter egg at mention of "strong"
     strongest = u" Hulk is the strongest there is!"
-    if (u" strong " in hulkText) and (len(hulkText) + len(strongest) <= 140):
-        hulkText += strongest
+    if (u" strong " in hulkText):
+        if (maxLength == None) or (len(hulkText) + len(strongest) <= maxLength):
+            hulkText += strongest
 
     # Convert the whole thing to uppercase. 
     hulkText = hulkText.upper()
@@ -279,4 +314,5 @@ if __name__ == '__main__':
         corpus = []
 
     for text in corpus:
-        print hulkify(unicode(text, "utf-8")).encode("utf-8")
+        print hulkify(unicode(text, "utf-8"), maxLength=140).encode("utf-8")
+
