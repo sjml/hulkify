@@ -6,7 +6,6 @@ setup(name='hulkify',
       version='0.0.1',
       packages=['hulkify'],
       description='Turn normal English into HULK-SPEAK',
-      long_description='Applies a series of transformations '
       url='http://github.com/sjml/hulkify',
       author='Shane Liesegang',
       author_email='shane@techie.net',
