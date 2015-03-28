@@ -1,2 +1,5 @@
 env/
-test_corpus.txt
+hulkify/test_corpus.txt
+build/
+dist/
+hulkify.egg-info/
