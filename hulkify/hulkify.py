@@ -1,167 +1,22 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+# system imports
 import sys
+import pkg_resources
 import re
 import random
+import json
 
+# library imports
 import pattern.en
 
+try:
+    data = pkg_resources.resource_string(__name__, "./grammar.json")
+    GRAMMAR = json.loads(data)
+except:
+    raise RuntimeError("Couldn't load hulkify grammar file.")
 
-PERSONAL_PRONOUNS = [
-    u"me",
-    u"myself",
-    u"I've",
-    u"I'm",
-    u"I'd",
-    u"I'll",
-    u"I",
-]
-
-PERSONAL_POSSESSIVE_PRONOUNS = [
-    u"my",
-    u"mine",
-]
-
-CONTRACTION_MAPPING = {
-    u"ain't" : u"not",
-    u"aren't" : u"not",
-    u"can't" : u"not",
-    u"could've" : u"could",
-    u"couldn't" : u"not",
-    u"didn't" : u"not",
-    u"doesn't" : u"not",
-    u"don't" : u"no",
-    u"hadn't" : u"not",
-    u"hasn't" : u"not",
-    u"haven't" : u"not",
-    u"he'd" : u"he",
-    u"he'll" : u"he",
-    u"he's" : u"he",
-    u"how'd" : u"how",
-    u"how'll" : u"how",
-    u"how's" : u"how",
-    u"isn't" : u"not",
-    u"it'd" : u"it",
-    u"it'll" : u"it",
-    u"it's" : u"it",
-    u"let's" : u"let",
-    u"might've" : u"might",
-    u"mightn't" : u"not",
-    u"must've" : u"must",
-    u"mustn't" : u"not",
-    u"needn't" : u"not",
-    u"not've" : u"not",
-    u"oughtn't" : u"not",
-    u"shan't" : u"not",
-    u"she'd" : u"she",
-    u"she'll" : u"she",
-    u"she's" : u"she",
-    u"should've" : u"should",
-    u"shouldn't" : u"not",
-    u"that'll" : u"that",
-    u"that's" : u"that",
-    u"there'd" : u"there",
-    u"there're" : u"there",
-    u"there's" : u"there",
-    u"they'd" : u"they",
-    u"they'll" : u"they",
-    u"they're" : u"they",
-    u"they've" : u"they",
-    u"wasn't" : u"not",
-    u"we'd" : u"we",
-    u"we'll" : u"we",
-    u"we're" : u"we",
-    u"we've" : u"we",
-    u"weren't" : u"not",
-    u"what'll" : u"what",
-    u"what're" : u"what",
-    u"what's" : u"what",
-    u"what've" : u"what",
-    u"when's" : u"when",
-    u"where'd" : u"where",
-    u"where's" : u"where",
-    u"where've" : u"where",
-    u"who'd" : u"who",
-    u"who'll" : u"who",
-    u"who're" : u"who",
-    u"who's" : u"who",
-    u"who've" : u"who",
-    u"why'll" : u"why",
-    u"why're" : u"why",
-    u"why's" : u"why",
-    u"won't" : u"not",
-    u"would've" : u"would",
-    u"wouldn't" : u"not",
-    u"y'all" : u"you",
-    u"you'd" : u"you",
-    u"you'll" : u"you",
-    u"you're" : u"you",
-    u"you've" : u"you",
-}
-
-ARTICLES = [
-    u"a",
-    u"an",
-    u"the",
-]
-
-LINKING_VERBS = [
-    u"be",
-    u"is",
-    u"was",
-    u"shall be",
-    u"will be",
-    u"has been",
-    u"had been",
-    u"may be",
-    u"should be",
-    u"am",
-    u"are",
-    u"were",
-    u"shall have been",
-    u"will have been",
-    u"have been",
-]
-
-DIMINUTIVE_ADJECTIVES = [
-    u"small",
-    u"meager",
-    u"cramped",
-    u"limited",
-    u"meager",
-    u"microscopic",
-    u"miniature",
-    u"minuscule",
-    u"modest",
-    u"narrow",
-    u"paltry",
-    u"short",
-    u"slight",
-    u"small-scale",
-    u"young",
-    u"baby",
-    u"little",
-    u"mini",
-    u"petite",
-    u"trifling",
-    u"wee",
-    u"bitty",
-    u"immature",
-    u"inadequate",
-    u"inconsequential",
-    u"inconsiderable",
-    u"insufficient",
-    u"piddling",
-    u"pint-sized",
-    u"pitiful",
-    u"pocket-sized",
-    u"stunted",
-    u"teensy",
-    u"teeny",
-    u"trivial",
-    u"undersized",
-]
 
 # preprocess to account for unicode
 def fixList(myList):
@@ -180,10 +35,12 @@ def fixDict(myDict):
             replacement[key.replace(u"'", u"’")] = value
     return replacement
 
-PERSONAL_PRONOUNS = fixList(PERSONAL_PRONOUNS)
-PERSONAL_POSSESSIVE_PRONOUNS = fixList(PERSONAL_POSSESSIVE_PRONOUNS)
-CONTRACTION_MAPPING = fixDict(CONTRACTION_MAPPING)
-LINKING_VERBS = fixList(LINKING_VERBS)
+PERSONAL_PRONOUNS = fixList(GRAMMAR["PERSONAL_PRONOUNS"])
+PERSONAL_POSSESSIVE_PRONOUNS = fixList(GRAMMAR["PERSONAL_POSSESSIVE_PRONOUNS"])
+CONTRACTION_MAPPING = fixDict(GRAMMAR["CONTRACTION_MAPPING"])
+LINKING_VERBS = fixList(GRAMMAR["LINKING_VERBS"])
+ARTICLES = fixList(GRAMMAR["ARTICLES"])
+DIMINUTIVE_ADJECTIVES = fixList(GRAMMAR["DIMINUTIVE_ADJECTIVES"])
 
 
 def hulkify(bannerText, maxLength=None, encoding="utf-8"):
