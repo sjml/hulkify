@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 # upload with: python setup.py sdist upload -r pypi
 
 setup(name='hulkify',
-    version='0.0.1',
+    version='0.0.3',
     packages=['hulkify'],
     description='Turn normal English into HULK-SPEAK',
     url='http://github.com/sjml/hulkify',

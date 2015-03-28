@@ -296,7 +296,7 @@ def hulkify(bannerText, maxLength=None, encoding="utf-8"):
 
     # Easter egg at mention of "strong"
     strongest = u" Hulk is the strongest there is!"
-    if (u" strong " in hulkText):
+    if re.search(ur"\bstrong\b", hulkText, re.IGNORECASE | re.UNICODE) != None:
         if (maxLength == None) or (len(hulkText) + len(strongest) <= maxLength):
             hulkText += strongest
 
@@ -308,7 +308,7 @@ def hulkify(bannerText, maxLength=None, encoding="utf-8"):
 
 if __name__ == '__main__':
     try:
-        with open("./test_corpus.txt", "r") as corpusFile:
+        with open("../test_corpus.txt", "r") as corpusFile:
             corpus = corpusFile.read().split("\n")
     except:
         corpus = []

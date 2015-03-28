@@ -1,6 +1,5 @@
 *.pyc
 env/
-hulkify/test_corpus.txt
 build/
 dist/
 hulkify.egg-info/
