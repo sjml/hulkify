@@ -35,12 +35,12 @@ def fixDict(myDict):
             replacement[key.replace(u"'", u"’")] = value
     return replacement
 
-PERSONAL_PRONOUNS = fixList(GRAMMAR["PERSONAL_PRONOUNS"])
-PERSONAL_POSSESSIVE_PRONOUNS = fixList(GRAMMAR["PERSONAL_POSSESSIVE_PRONOUNS"])
-CONTRACTION_MAPPING = fixDict(GRAMMAR["CONTRACTION_MAPPING"])
-LINKING_VERBS = fixList(GRAMMAR["LINKING_VERBS"])
-ARTICLES = fixList(GRAMMAR["ARTICLES"])
-DIMINUTIVE_ADJECTIVES = fixList(GRAMMAR["DIMINUTIVE_ADJECTIVES"])
+GRAMMAR["PERSONAL_PRONOUNS"] = fixList(GRAMMAR["PERSONAL_PRONOUNS"])
+GRAMMAR["PERSONAL_POSSESSIVE_PRONOUNS"] = fixList(GRAMMAR["PERSONAL_POSSESSIVE_PRONOUNS"])
+GRAMMAR["CONTRACTION_MAPPING"] = fixDict(GRAMMAR["CONTRACTION_MAPPING"])
+GRAMMAR["LINKING_VERBS"] = fixList(GRAMMAR["LINKING_VERBS"])
+GRAMMAR["ARTICLES"] = fixList(GRAMMAR["ARTICLES"])
+GRAMMAR["DIMINUTIVE_ADJECTIVES"] = fixList(GRAMMAR["DIMINUTIVE_ADJECTIVES"])
 
 
 def hulkify(bannerText, maxLength=None, encoding="utf-8"):
@@ -70,28 +70,28 @@ def hulkify(bannerText, maxLength=None, encoding="utf-8"):
         return newText
 
     # Change contractions to their main word. ("can't" -> "not")
-    for con, main in CONTRACTION_MAPPING.iteritems():
+    for con, main in GRAMMAR["CONTRACTION_MAPPING"].iteritems():
         hulkText = re.sub(ur"(\s?|^)(\b%s\b)(\s?|$)" % (con), ur"\1%s\3" % main, hulkText, flags=re.IGNORECASE | re.UNICODE)
 
     # Drop all linking verbs ("am" or "to be")
-    for lv in LINKING_VERBS:
+    for lv in GRAMMAR["LINKING_VERBS"]:
         hulkText = re.sub(ur"(\s?|^)(\b%s\b)(\s?|$)" % (lv), removeWordFromMatch, hulkText, flags=re.IGNORECASE | re.UNICODE)
 
     # Remove articles.
-    for a in ARTICLES:
+    for a in GRAMMAR["ARTICLES"]:
         hulkText = re.sub(ur"(\s?|^)(\b%s\b)(\s?|$)" % (a), removeWordFromMatch, hulkText, flags=re.IGNORECASE | re.UNICODE)
 
 
     ### everything above here only removes content; after this we have to consider length
 
     # Replace all personal pronouns (I/me/I've/I'm/etc) with "Hulk"
-    for pp in PERSONAL_PRONOUNS:
+    for pp in GRAMMAR["PERSONAL_PRONOUNS"]:
         hulkText = changeTextUnlessOverrun(
             hulkText,
             re.sub(ur"(\s?|^)(\b%s\b)(\s?|$)" % (pp), ur"\1Hulk\3", hulkText, flags=re.IGNORECASE | re.UNICODE),
             maxLength
         )
-    for ppp in PERSONAL_POSSESSIVE_PRONOUNS:
+    for ppp in GRAMMAR["PERSONAL_POSSESSIVE_PRONOUNS"]:
         if u"’" in bannerText:
             hulkText = changeTextUnlessOverrun(
                 hulkText,
@@ -119,7 +119,7 @@ def hulkify(bannerText, maxLength=None, encoding="utf-8"):
     # Replace any diminuitive adjective with "puny."
     for wordData in parsed:
         if wordData[1][:2] == u"JJ":
-            if wordData[0] in DIMINUTIVE_ADJECTIVES:
+            if wordData[0] in GRAMMAR["DIMINUTIVE_ADJECTIVES"]:
                 hulkText = changeTextUnlessOverrun(
                     hulkText,
                     re.sub(ur"\b%s\b" % wordData[0], u"puny", hulkText, flags=re.IGNORECASE | re.UNICODE),

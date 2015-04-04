@@ -1,15 +1,19 @@
 from setuptools import setup
+import json
+
+package_info = json.load(open("./package.json", "r"))
 
 # upload with: python setup.py sdist upload -r pypi
 
 setup(name='hulkify',
-    version='0.0.3',
+    version=package_info['version'],
+    description=package_info['description'],
+    url=package_info['homepage'],
+    author=package_info['author']['name'],
+    author_email=package_info['author']['email'],
+    license=package_info['license'],
+    keywords=package_info['keywords'],
     packages=['hulkify'],
-    description='Turn normal English into HULK-SPEAK',
-    url='http://github.com/sjml/hulkify',
-    author='Shane Liesegang',
-    author_email='shane@techie.net',
-    license='MIT',
     classifiers = [
       'Development Status :: 3 - Alpha',
       'Intended Audience :: Developers',
@@ -19,6 +23,5 @@ setup(name='hulkify',
       'Programming Language :: Python :: 2.7',
       'Topic :: Text Processing :: Filters',
     ],
-    keywords=['hulk', 'english', 'text', 'filter'],
     install_requires=["Pattern>=2.6"],
 )
