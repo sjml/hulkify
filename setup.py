@@ -3,8 +3,6 @@ import json
 
 package_info = json.load(open("./package.json", "r"))
 
-# upload with: python setup.py sdist upload -r pypi
-
 setup(name='hulkify',
     version=package_info['version'],
     description=package_info['description'],
