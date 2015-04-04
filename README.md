@@ -50,8 +50,8 @@ bannerText = "Hello, I'm very happy to be seeing you all. It's a small wonder th
 
 print hulkify(bannerText)
 
-# outputs: HELLO, HULK VERY HAPPY TO SEE YOU ALL! IT PUNY WONDER THAT HULK SURVIVED!!!
 ```
+**output:** HELLO, HULK VERY HAPPY TO SEE YOU ALL! IT PUNY WONDER THAT HULK SURVIVED!!!
 
 ### Node.js
 ```javascript
@@ -62,5 +62,5 @@ var bannerText = 'You are very kind to try and educate me as to the perils of sm
 
 console.log(hulkify(bannerText));
 
-// output: YOU VERY KIND TO TRY AND EDUCATE HULK AS TO PERILS OF SMOKING, BUT HULK CONTENT TO RISK IT!! "HEALTH" RELATIVE MATTER!
 ```
+**output:** YOU VERY KIND TO TRY AND EDUCATE HULK AS TO PERILS OF SMOKING, BUT HULK CONTENT TO RISK IT!! "HEALTH" RELATIVE MATTER!
