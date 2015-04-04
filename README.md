@@ -60,7 +60,7 @@ var hulkify = require('hulkify');
 
 var bannerText = 'You are very kind to try and educate me as to the perils of smoking, but I\'m content to risk it. "Health" is a relative matter.';
 
-console.log(hulkify.hulkify(bannerText));
+console.log(hulkify(bannerText));
 
 // output: YOU VERY KIND TO TRY AND EDUCATE HULK AS TO PERILS OF SMOKING, BUT HULK CONTENT TO RISK IT!! "HEALTH" RELATIVE MATTER!
 ```
