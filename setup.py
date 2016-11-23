@@ -2,17 +2,14 @@ from setuptools import setup
 import json
 import os
 
-npmFile = os.path.join(os.path.dirname(__file__), "package.json")
-package_info = json.load(open(npmFile, "r"))
-
 setup(name='hulkify',
-    version=package_info['version'],
-    description=package_info['description'],
-    url=package_info['homepage'],
-    author=package_info['author']['name'],
-    author_email=package_info['author']['email'],
-    license=package_info['license'],
-    keywords=package_info['keywords'],
+    version='0.0.7',
+    description='Turn normal English into HULK-SPEAK',
+    url='https://github.com/sjml/hulkify',
+    author='Shane Liesegang',
+    author_email='shane@techie.net',
+    license='MIT',
+    keywords='hulk english text filter',
     packages=['hulkify'],
     classifiers = [
       'Development Status :: 3 - Alpha',
