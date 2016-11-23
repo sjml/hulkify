@@ -1,7 +1,9 @@
 from setuptools import setup
 import json
+import os
 
-package_info = json.load(open("./package.json", "r"))
+npmFile = os.path.join(os.path.dirname(__file__), "package.json")
+package_info = json.load(open(npmFile, "r"))
 
 setup(name='hulkify',
     version=package_info['version'],
