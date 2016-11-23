@@ -3,7 +3,7 @@ import json
 import os
 
 setup(name='hulkify',
-    version='0.0.7',
+    version='0.0.8',
     description='Turn normal English into HULK-SPEAK',
     url='https://github.com/sjml/hulkify',
     author='Shane Liesegang',
@@ -11,6 +11,7 @@ setup(name='hulkify',
     license='MIT',
     keywords='hulk english text filter',
     packages=['hulkify'],
+    package_data={'hulkify': ['grammar.json']},
     classifiers = [
       'Development Status :: 3 - Alpha',
       'Intended Audience :: Developers',

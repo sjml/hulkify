@@ -1,6 +1,6 @@
 {
   "name": "hulkify",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Turn normal English into HULK-SPEAK",
   "main": "hulkify/hulkify.js",
   "dependencies" : {
