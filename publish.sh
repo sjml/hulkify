@@ -1,4 +1,9 @@
 #! /bin/sh
 
-python setup.py sdist upload -r pypi
+rm -rf ./dist
+
 npm publish
+
+python setup.py sdist
+twine upload dist/*
+
