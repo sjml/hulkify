@@ -7,6 +7,7 @@ import pkg_resources
 import re
 import random
 import json
+from HTMLParser import HTMLParser
 
 # library imports
 import pattern.en
@@ -44,6 +45,9 @@ GRAMMAR["DIMINUTIVE_ADJECTIVES"] = fixList(GRAMMAR["DIMINUTIVE_ADJECTIVES"])
 
 
 def hulkify(bannerText, maxLength=None, encoding="utf-8"):
+    hp = HTMLParser()
+    bannerText = hp.unescape(bannerText)
+
     if type(bannerText) != unicode:
         hulkText = unicode(bannerText, encoding)
     else:
@@ -128,7 +132,7 @@ def hulkify(bannerText, maxLength=None, encoding="utf-8"):
 
     # Exclamation points.
     def exclaim(matchObject):
-        punct = matchObject.group(0)
+        punct = matchObject.group(1)
         if u"." in punct and punct.count(u"!") == 0:
             # change out periods most of the time
             if (random.random() < 0.7):
@@ -147,9 +151,9 @@ def hulkify(bannerText, maxLength=None, encoding="utf-8"):
                 if u"?" in punct:
                     punct += u"?!"
 
-        return punct
+        return punct + matchObject.group(2)
 
-    hulkText = re.sub(ur"([.?!]+)", exclaim, hulkText)
+    hulkText = re.sub(ur"([.?!]+)(\s|$)", exclaim, hulkText)
 
     # Easter egg at mention of "strong"
     strongest = u" Hulk is the strongest there is!"
@@ -164,12 +168,17 @@ def hulkify(bannerText, maxLength=None, encoding="utf-8"):
 
 
 if __name__ == '__main__':
+    import os
     try:
-        with open("../test_corpus.txt", "r") as corpusFile:
-            corpus = corpusFile.read().split("\n")
+        with open(os.path.join(os.path.dirname(__file__), "..", "test_corpus.txt"), "r") as corpusFile:
+            corpusString = corpusFile.read()
+            corpusString = corpusString.replace("/r", "")
+            corpus = corpusString.split("\n")
     except:
         corpus = []
 
     for text in corpus:
+        if len(text) == 0:
+            continue
         print hulkify(unicode(text, "utf-8"), maxLength=140).encode("utf-8")
 

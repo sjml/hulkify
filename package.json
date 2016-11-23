@@ -1,11 +1,12 @@
 {
   "name": "hulkify",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Turn normal English into HULK-SPEAK",
   "main": "hulkify/hulkify.js",
-  "dependencies" : {
-    "pos" : "0.1.9",
-    "nlp_compromise" : "0.3.5"
+  "dependencies": {
+    "html-entities": "1.2.0",
+    "nlp_compromise": "0.3.5",
+    "pos": "0.1.9"
   },
   "repository": {
     "type": "git",
@@ -18,7 +19,7 @@
     "filter"
   ],
   "author": {
-    "name": "Shane Liesegang", 
+    "name": "Shane Liesegang",
     "email": "shane@techie.net",
     "url": "http://shaneliesegang.com"
   },

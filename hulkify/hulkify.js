@@ -1,7 +1,8 @@
 
-var fs = require('fs');
+var fs  = require('fs');
 var pos = require('pos');
 var nlp = require('nlp_compromise');
+var ent = require('html-entities').AllHtmlEntities;
 
 var GRAMMAR = require('./grammar.json');
 
@@ -36,6 +37,9 @@ GRAMMAR.ARTICLES = fixList(GRAMMAR.ARTICLES);
 GRAMMAR.DIMINUTIVE_ADJECTIVES = fixList(GRAMMAR.DIMINUTIVE_ADJECTIVES);
 
 function hulkify(bannerText, maxLength) {
+  var entProc = new ent();
+  bannerText = entProc.decode(bannerText);
+  
   var hulkText = bannerText;
 
   function removeWordFromMatch(match, g1, g2, g3) {
@@ -149,7 +153,7 @@ function hulkify(bannerText, maxLength) {
   }
 
   // Exclamation points
-  function exclaim (match, g0) {
+  function exclaim (match, g0, g1) {
     var punct = g0;
     if ( (punct.indexOf('.') >= 0) && ((punct.match(/!/g) || []).length == 0) ) {
       // change out periods most of the time
@@ -175,10 +179,10 @@ function hulkify(bannerText, maxLength) {
       }
     }
 
-    return punct;
+    return punct + g1;
   }
 
-  hulkText = hulkText.replace(/([.?!]+)/gi, exclaim);
+  hulkText = hulkText.replace(/([.?!]+)(\s|$)/gi, exclaim);
 
   // Easter egg at mention of "strong"
   var strongest = ' Hulk is the strongest there is!';
@@ -197,8 +201,13 @@ function hulkify(bannerText, maxLength) {
 
 
 var main = function(){
-  var corpus = fs.readFileSync('./test_corpus.txt').toString().split("\n");
+  var corpusString = fs.readFileSync('./test_corpus.txt').toString();
+  corpusString = corpusString.replace(/\r/g, '');
+  var corpus = corpusString.split("\n");
   for (var i=0; i < corpus.length; i++) {
+    if (corpus[i].length === 0) {
+      continue;
+    }
     var val = hulkify(corpus[i], 140);
     console.log(val);
   }
